@@ -1,0 +1,20 @@
+tasks:
+  Series task:
+    rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
+    series:
+      - Robot
+      - The Big Bang Theory
+      - Top Gear
+      - Game of Thrones
+      - House of cards
+      - Mokslo sriuba
+      - Suits
+      - UEFA Champions League Highlights 
+      - Vikings
+      - Narcos:      
+          quality: 720p 1080p 
+    deluge: 
+      host: "localhost"
+      port: 58846
+      username: <%= ENV['USERNAME'] %>
+     password: <%= ENV['PASSWORD'] %>

@@ -16,5 +16,5 @@ tasks:
     deluge: 
       host: "localhost"
       port: 58846
-      username: <%= ENV['USERNAME'] %>
-     password: <%= ENV['PASSWORD'] %>
+      username: username_goes_here
+      password: password_goes_here

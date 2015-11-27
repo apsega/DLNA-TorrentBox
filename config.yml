@@ -9,11 +9,11 @@ tasks:
       - House of cards
       - Mokslo sriuba
       - Suits
-      - UEFA Champions League Highlights 
+      - UEFA Champions League Highlights
       - Vikings
-      - Narcos:      
-          quality: 720p 1080p 
-    deluge: 
+      - Narcos:
+          quality: 720p 1080p
+    deluge:
       host: "localhost"
       port: 58846
       username: username_goes_here

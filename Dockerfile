@@ -15,6 +15,6 @@ ADD config.yml /root/.flexget/
 
 COPY startup.sh /home/
 
-EXPOSE 8112 8200 1900/udp
+EXPOSE 8112 8200 1900
 
 ENTRYPOINT ["/home/startup.sh"]

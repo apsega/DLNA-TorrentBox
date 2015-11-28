@@ -8,10 +8,8 @@ RUN yum -y install wget epel-release && \
     easy_install flexget
 #    (crontab -l ; echo "@hourly /usr/bin/flexget execute -v >> /var/log/flexget.log 2>&1") 2>&1 | grep -v "no crontab" | crontab - && \
 
-  
-ADD config.yml /root/.flexget/
-
-COPY startup.sh /home/
+COPY ["config.yml", "/root/.flexget/"]
+COPY ["startup.sh", "/home/"]
 
 EXPOSE 8112
 

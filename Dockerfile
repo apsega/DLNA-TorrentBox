@@ -5,7 +5,7 @@ RUN yum -y install wget epel-release && \
     rpm -ivh nux-dextop-release-0-5.el7.nux.noarch.rpm && \
     yum -y install minidlna deluge-web && \
     yum clean all && \
-    easy_install flexget && \
+    easy_install flexget
 
 COPY ["config.yml", "/root/.flexget/"]
 COPY ["startup.sh", "/home/"]

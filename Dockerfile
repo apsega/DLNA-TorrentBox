@@ -5,14 +5,12 @@ RUN yum -y install wget epel-release && \
     rpm -ivh nux-dextop-release-0-5.el7.nux.noarch.rpm && \
     yum -y install minidlna deluge-web && \
     yum clean all && \
-    easy_install flexget
-#    (crontab -l ; echo "@hourly /usr/bin/flexget execute -v >> /var/log/flexget.log 2>&1") 2>&1 | grep -v "no crontab" | crontab - && \
+    easy_install flexget && \
 
 COPY ["config.yml", "/root/.flexget/"]
 COPY ["startup.sh", "/home/"]
-
-ADD config.yml /root/.flexget/
-
+COPY ["minidlna.conf", "/etc/"]
+COPY ["0hourly", "/etc/cron.d/"]
 EXPOSE 8112 8200 1900
 
 ENTRYPOINT ["/home/startup.sh"]

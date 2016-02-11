@@ -18,3 +18,10 @@ tasks:
       port: 58846
       username: username_goes_here
       password: password_goes_here
+    
+    email:
+      active: True
+      from: TorrentBox
+      to: email@adress
+      subject: '[TorrentBox] New Download'
+      template: html.template

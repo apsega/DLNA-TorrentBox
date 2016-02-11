@@ -1,0 +1,330 @@
+{% if task.accepted -%}
+
+{# Global variables #}
+{% set unique_list = [] %}
+{% set tv_shows = [] %}
+{% set movies = [] %}
+{% set dates = [] %}
+{% set ratings = {0: '', 1: '★', 2: '★★', 3: '★★★', 4: '★★★★', 5: '★★★★★'} %}
+
+{% for entry in task.accepted %}
+	{% if entry.series_name|d(false) %}
+		{% set unique_id = '%s %s'|format( entry.series_name|re_replace("'|\.|\"", '')|lower, entry.series_id ) %}
+		{% if unique_id not in unique_list %}
+			{% if unique_list.append(unique_id) or tv_shows.append(entry) or dates.append(entry.rss_pubdate|d(now())) %}{% endif %}
+		{% endif %} 
+	{% else %}
+		{% set unique_id = entry.imdb_name|d('Undefined') %}
+		{% if unique_id not in unique_list %}
+			{% if unique_list.append(unique_id) or movies.append(entry) or dates.append(entry.rss_pubdate|d(now())) %}{% endif %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+{% set tv_shows = tv_shows|sort(attribute='series_name') %}
+{% set movies = movies|sort(attribute='imdb_name') %}
+
+{% set show_colors = { 'archer': '#47dc25', 'boardwalk empire': '#dca328', 'breaking bad': '#06954c', 'game of thrones': '#faa912', 'homeland': '#f8b411', "it's always sunny in philadelphia": '#fcdc00', 'louie': '#f7020b', 'mad men': '#ed2c23', 'sherlock': '#63758b', 'suits': '#f05253', 'the league': '#f2ce09', 'the walking dead': '#b0a07e' } %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Flexget Newsletter</title>
+	<style type="text/css">
+		.series:nth-child(n+2), .movie:nth-child(n+2) {
+			padding-top: 15px;
+		}
+		/* iPhone, small screens */
+		@media screen and (device-aspect-ratio: 2/3), screen and (device-aspect-ratio: 40/71), screen and (max-device-width: 715px) {
+			.info {
+				bottom: 12px;
+				left: 4px;
+				padding: 5px 8px !important;
+			}
+
+			.seriesName {
+				font-size: 1.2em;
+				text-shadow: none !important;
+			}
+
+			.epName {
+				font-size: 1em;
+				font-weight: 300;
+				font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
+			}
+
+			.poster {
+				display: none !important;
+			}
+
+			.details {
+				min-height: inherit !important;
+			}
+
+			.airRuntime {
+				display: none !important;
+			}
+			
+			.episodeDetails, .rating, .movieDetails {
+			    font-size: 1.1em;
+			}
+
+			.details {
+				padding: 5px 10px !important;
+				position: inherit !important;
+			}
+		}
+
+		@media screen and (min-device-width: 715px) {
+			.episodeDetails, .movieDetails {
+				font-size: 1.2em;
+			}
+			.rating {
+				font-size: 1em;
+			}
+			.plot {
+				font-size: 1.1em;
+			}
+		}
+
+		.shadedLine {
+		    height: 3px;
+		    background: #00ccff; /* Old browsers */
+		    background: -moz-linear-gradient(left, #00ccff 0%, #008de5 100%); /* FF3.6+ */
+		    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#00ccff), color-stop(100%,#008de5)); /* Chrome,Safari4+ */
+		    background: -webkit-linear-gradient(left, #00ccff 0%,#008de5 100%); /* Chrome10+,Safari5.1+ */
+		    background: -o-linear-gradient(left, #00ccff 0%,#008de5 100%); /* Opera 11.10+ */
+		    background: -ms-linear-gradient(left, #00ccff 0%,#008de5 100%); /* IE10+ */
+		    background: linear-gradient(to right, #00ccff 0%,#008de5 100%); /* W3C */
+		    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ccff', endColorstr='#008de5',GradientType=1 ); /* IE6-9 */
+		    /*position: relative;
+		    bottom: 3px;*/
+		    z-index: 999;
+		    display: none;
+		}
+
+		.divider {
+			margin: 0 auto;
+		    position: relative;
+		}
+
+		.line {
+		    height: 1px;
+		    background: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,0));
+		    margin: 0 auto;
+		    z-index: 1;
+		    top: 12px;
+		}
+
+		.content, .amp, .seperator {
+			height: 24px;
+			margin: 0 auto;
+			background-color: #FFF;
+		}
+		.content {
+		    z-index: 98;
+		    max-width: 48px;
+		}
+		.amp {
+			font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', serif;
+			font-style: italic;
+		    font-size: 14px;
+		    display: block;
+		    max-width: 24px;
+		    line-height: 25px;
+		    border: 1px solid #ddd;
+		    color: #999;
+		    border-radius: 15px;
+		    text-align: center;
+		    display: none;
+		}
+
+		.seperator {
+			text-transform: uppercase;
+			font-size: 12px;
+			display: block;
+			text-align: center;
+			line-height: 24px;
+			color: #666;
+			font-weight: bold;
+		}
+
+		.series:nth-last-child(2) hr {
+			display: none;
+		}
+
+		.series:nth-last-child(2) .divider {
+		    display: none;
+		}
+
+		{% for show in show_colors %}
+			.{{show|replace(' ', '_')}} {
+				color: {{show_colors[show]}};
+			}
+		{% endfor %}
+	</style>
+</head>
+<body style="font-family:'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; sans-serif; background-color: #fff; padding: 0; margin: 0; color: #fff;"> 
+	<div class="container" style="color: #222; margin: 0 auto;">
+		{% for ep in tv_shows %}
+			<div class="series">
+				{% if ep.tvdb_fanart_url|d(false) %}
+					<div class="banner" style="position: relative;">
+						{% set link = ep.imdb_url|d(false) %}
+						{% set link = 'http://thetvdb.com/?tab=series&id='+ep.tvdb_id|string if (not link and ep.tvdb_id|d(false)) else link %}
+
+						<a href="{{link}}" style="text-decoration: none; border: none;"><img src="{{ep.tvdb_fanart_url}}" alt="{{ep.series_name}}" title="{{ep.series_name}}" style="width: 100%; z-index: 1;"/></a>
+
+						<div class="info" style="display: inline-block; background-color: rgba(0,0,0,0.75); color: #000; padding: 10px 15px; position: absolute; bottom: 75px; left: 20px; z-index: 999; border-radius: 5px;">
+							<div class="seriesName" style="font-weight: bold; font-size: 1.5em; color: #00ccff; text-shadow: 0 1px 0 #000;">
+								<span class="{{ep.series_name|lower|replace(' ', '_')}}" style="display: block;">{{ep.series_name|re_replace('\s?[0-9]{4}', '')}}</span>
+							</div>
+							<div class="epName" style="font-weight: 100; font-size: 1.1em; color: #fff;">
+								{{ep.tvdb_ep_name if ep.tvdb_ep_name|d(false) else ''}}
+							</div>
+						</div>
+					</div>
+					<div class="shadedLine"></div>
+					<div class="details" style="display: block; position: relative; bottom: 10px; padding: 25px 20px; padding-bottom: 0; min-height: 220px;">
+						{%if ep.tvdb_poster_url|d(false) %}
+							<div class="poster" style="width: 150px; float: left; padding-right: 15px;">
+								<img src="{{ep.tvdb_poster_url|replace('posters', '_cache/posters')}}" alt="{{ep.series_name}}" title="{{ep.series_name}}" style="width: 150px; border-radius: 4px;"/>
+							</div>
+						{% endif %}
+						<div class="episodeDetails" style="font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; color: #444;">
+							<span class="seasonEp">
+								{% set season_num = ep.tvdb_season|string if ep.tvdb_season|d(false) else ep.series_season %}
+								{% set ep_num = ep.series_id|re_replace('(?i)s[0-9]+|e', '') %}
+								{% set ep_num = ep_num[1:]|replace('-0', ' - ') if ep_num[0] == '0' else ep_num|replace('-0', ' - ') %}
+								
+								Season {{season_num}}, {{'Episode ' if '-' not in ep_num else 'Episodes '}}{{ep_num}}
+							</span>
+
+							<span class="airRuntime">
+							{% if ep.tvdb_ep_air_date|d(false) %}
+								 · {{ep.tvdb_ep_air_date|formatdate('%b %d, %Y')}}
+							{% endif %}
+
+							{% if ep.tvdb_runtime|d(false) %}
+								 · {{ep.tvdb_runtime}} minutes
+							{% endif %}
+							</span>
+						
+						<span class="rating" style="float: right; position: relative; bottom: 4px;">
+							{% set rating = ep.tvdb_ep_rating|d(0) %}
+							{% set ep_rating = (rating/2)|round %}
+							{% set stars = '★★★★★' if ep_rating > 0 else '☆☆☆☆☆' %}
+							{% set num_faded = 5 - ep_rating|int %}
+
+							{{ratings[ep_rating] ~ '<span class="fade" style="opacity: .25;">' ~ stars[:num_faded] ~ '</span>'}}
+						</span>
+						</div>
+						<p class="plot" style="font-family:'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; padding: 0; margin: 0; padding-top: 10px;"> {% if ep.tvdb_ep_overview|d(false) %}
+								{{ep.tvdb_ep_overview}}
+							{% endif %}
+						</p>
+					</div>
+				{% else %}
+				    <h1>{{ep.series_name}}</h1>
+				{% endif %}
+				{#<div class="divider">
+				    <div class="line"></div>
+				    <div class="content">
+				        <span class="seperator">and</span>
+				        <span class="amp">&amp;</span>
+				    </div>
+				</div>#}
+				<hr style="height: 1px; max-height: 1px; border: none; background: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.15), rgba(0,0,0,0));"/>
+			</div>
+		{% endfor %}
+
+		{% for movie in movies %}
+			<div class="movie">
+				<div class="details" style="display: block; position: relative; bottom: 10px; padding: 25px 20px; padding-bottom: 0; min-height: 220px;">
+					{% if movie.tmdb_posters|d(false) %}
+						<div class="poster" style="width: 150px; float: left; padding-right: 15px;">
+							{% set first_match = 0 %}
+							{% for poster in movie.tmdb_posters %}
+								{% set original = poster|re_replace('.*original.*', 'original')%}
+								{% if original == 'original' and first_match == 0 %}
+									{% set first_match = first_match + 1 %}
+									<a href="{{movie.imdb_url}}" style="text-decoration: none; border: none;"><img src="{{poster}}" style="width: 150px; border-radius: 4px;"></a>
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endif %}
+
+					<div class="movieDetails" style="font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; color: #444;">
+						<span class="yearRuntime">
+							{{movie.imdb_name}} · {{movie.imdb_year}}
+							{% if movie.tmdb_runtime|d(false) %}
+								· {{movie.tmdb_runtime}} minutes
+							{% endif %}
+						</span>
+
+						<span class="rating" style="float: right; position: relative; bottom: 4px;">
+							{% if movie.imdb_score|d(0) %}
+								{% set ep_rating = (movie.imdb_score/2)|round %}
+								{% set stars = '★★★★★' if ep_rating > 0 else '☆☆☆☆☆' %}
+								{% set num_faded = 5 - ep_rating|int %}
+
+								{{ratings[ep_rating] ~ '<span class="fade" style="opacity: .25;">' ~ stars[:num_faded] ~ '</span>'}}
+							{% endif %}
+						</span>
+					</div>
+
+					<p class="plot" style="font-family:'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; padding: 0; margin: 0; padding-top: 10px;">
+						{% if movie.imdb_plot_outline|d(false) %}
+							{{movie.imdb_plot_outline}}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endfor %}
+
+		{# Date Formatting #}
+		{% set max_min = [] %}
+		{% set max = 'Sat, 1 Jan 2000 00:00:00 +0000'|parsedate|to_date %}
+		{% set min = 'Thu, 31 Dec 2015 00:00:00 +0000'|parsedate|to_date %}
+		{% set download_date = [] %}
+
+		{% for date in dates %}
+			{% set date = date|to_date %}
+			{% if date > max %}{% set max = date %}{% endif %}
+			{% if date < min %}{% set min = date %}{% endif %}
+			{% if loop.last %}
+				{% if max_min.append(min) or max_min.append(max) %}{% endif %}
+			{% endif %}
+		{% endfor %}
+
+		{% set min = max_min[0] %}
+		{% set max = max_min[1] %}
+
+		{% if min|formatdate('%Y') == max|formatdate('%Y') %}
+			{% if min|formatdate('%b') == max|formatdate('%b') %}
+				{# days are not equal #}
+				{% if min|formatdate('%d') == max|formatdate('%d') %}
+					{% if download_date.append('%s %s'|format(min|formatdate('%A, %b *%d')|re_replace('\*0|\*', '')|date_suffix, min|formatdate('%Y'))) %}{% endif %}
+				{% else %}
+					{% if download_date.append('%s - %s, %s'|format(min|formatdate('%b *%d')|re_replace('\*0|\*', '')|date_suffix, max|formatdate('*%d')|re_replace('\*0|\*', '')|date_suffix, min|formatdate('%Y'))) %}{% endif %}
+				{% endif %}
+			{% else %}
+				{# months are not equal #}
+				{% if download_date.append(('%s - %s, %s')|format(min|formatdate('%b *%d')|re_replace('\*0|\*', '')|date_suffix, max|formatdate('%b *%d')|re_replace('\*0|\*', '')|date_suffix, min|formatdate('%Y'))) %}{% endif %}
+			{% endif %}
+		{% else %}
+			{# Years are not equal #}
+			{% if download_date.append(('%s - %s')|format(min|formatdate('%b *%d, %Y')|re_replace('\*0|\*', ''), max|formatdate('%b *%d, %Y')|re_replace('\*0|\*', ''))) %}{% endif %}
+		{% endif %}
+
+		{% set download_date = download_date[0] %}
+
+		<div class="footer" style="font-family:'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; background-color: #ccc; border-top: 1px dashed #888; padding: 10px; margin-top: 15px; text-align: center; font-size: .8em;">
+			{% set item_count = unique_list|length %}
+			<span class="num" style="font-weight: bold;">{{item_count}}</span> {{'item' if item_count == 1 else 'items'}} downloaded on {{download_date}}.
+		</div>
+	</div>
+</body>
+</html>
+{% endif %}

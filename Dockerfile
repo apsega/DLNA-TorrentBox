@@ -9,6 +9,7 @@ RUN yum update -y && \
     easy_install flexget
 
 COPY ["config.yml", "/root/.flexget/"]
+COPY ["templates/", "/root/.flexget/"]
 COPY ["startup.sh", "/root/"]
 COPY ["minidlna.conf", "/etc/"]
 COPY ["0daily", "/etc/cron.d/"]

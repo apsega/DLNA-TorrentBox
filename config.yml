@@ -9,8 +9,8 @@ templates:
     deluge:
       host: "localhost"
       port: 58846
-      username: "localclient"
-      password: "c120ff48a3c6fdad072fc59aa2b67fd1e430e5b7"
+      username: username_goes_here 
+      password: password_goes_here 
 
   movies:
     exists_movie: /home/Movies/

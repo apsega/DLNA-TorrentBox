@@ -48,7 +48,7 @@ tasks:
       - deluge_server
       - notification
   Movies task:
-    rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=4c58a2a3233722691ffa53f5e5b695f3
+    rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=
     template: 
       - movies
       - notification

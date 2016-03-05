@@ -1,3 +1,34 @@
+templates:
+  global:
+    regexp:
+      reject:
+        - WEB
+        - WEB-DL
+        
+  deluge_server:
+    deluge:
+      host: "localhost"
+      port: 58846
+      username: "localclient"
+      password: "c120ff48a3c6fdad072fc59aa2b67fd1e430e5b7"
+
+  movies:
+    exists_movie: /home/Movies/
+    imdb_required: yes
+    seen_movies: strict
+    quality: 1080p
+    regexp:
+      reject:
+        - WEB
+        - WEB-DL
+  notification:
+    email:
+      active: True
+      from: TorrentBox
+      to: info@apsega.lt
+      subject: '[TorrentBox] New Download'
+      template: html.template
+
 tasks:
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
@@ -13,15 +44,20 @@ tasks:
       - Vikings
       - Narcos:
           quality: 720p 1080p
-    deluge:
-      host: "localhost"
-      port: 58846
-      username: username_goes_here
-      password: password_goes_here
+    template:
+      - deluge_server
+      - notification
+  Movies task:
+    rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=4c58a2a3233722691ffa53f5e5b695f3
+    template: 
+      - movies
+      - notification
+      - deluge_server
+    imdb:
+      min_score: 7.5
+      min_votes: 4000
+      min_year: 2009
+      reject_genres:
+        - musical
+    download: /home/Movies/
     
-    email:
-      active: True
-      from: TorrentBox
-      to: email@adress
-      subject: '[TorrentBox] New Download'
-      template: html.template

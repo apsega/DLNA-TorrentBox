@@ -4,16 +4,16 @@ templates:
       reject:
         - WEB
         - WEB-DL
-        
+
   deluge_server:
     deluge:
       host: "localhost"
       port: 58846
-      username: username_goes_here 
-      password: password_goes_here 
+      username: username_goes_here
+      password: password_goes_here
 
   movies:
-    exists_movie: /home/Movies/
+    exists_movie: /home/Videos/
     imdb_required: yes
     seen_movies: strict
     quality: 1080p
@@ -25,7 +25,7 @@ templates:
     email:
       active: True
       from: TorrentBox
-      to: info@apsega.lt
+      to: your@email.com
       subject: '[TorrentBox] New Download'
       template: html.template
 
@@ -33,12 +33,11 @@ tasks:
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
     series:
-      - Robot
+      - Mr Robot
       - The Big Bang Theory
       - Top Gear
       - Game of Thrones
       - House of cards
-      - Mokslo sriuba
       - Suits
       - UEFA Champions League Highlights
       - Vikings
@@ -49,7 +48,7 @@ tasks:
       - notification
   Movies task:
     rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=
-    template: 
+    template:
       - movies
       - notification
       - deluge_server
@@ -59,5 +58,4 @@ tasks:
       min_year: 2009
       reject_genres:
         - musical
-    download: /home/Movies/
-    
+    download: /home/Videos/

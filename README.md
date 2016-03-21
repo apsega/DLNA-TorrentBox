@@ -1,7 +1,5 @@
 # DLNA-TorrentBox
-Docker container for DLNA (minidlna) and TorrentBox (Deluge-WebUI) with RSS (flexget)
-
-[![](https://badge.imagelayers.io/edgaras/dlna-torrentbox:latest.svg)](https://imagelayers.io/?images=edgaras/dlna-torrentbox:development)
+Docker container for DLNA (minidlna) and TorrentBox (Deluge-WebUI) with RSS (flexget).
 
 ## Main Features
 

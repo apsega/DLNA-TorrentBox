@@ -7,7 +7,7 @@ Docker container for DLNA (minidlna) and TorrentBox (Deluge-WebUI) with RSS (fle
 
 ### Deluge Web UI
 Deluge Web User Interface with awesome features:
-* Password protection
+* Password protection (default password is ``deluge`` and you'll be asked if you want to change it)
 * Auto load torrents from any location
 * Stop seeding torrents after [number] ratio is reached
 * And many more!

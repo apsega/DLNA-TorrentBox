@@ -21,6 +21,7 @@ templates:
       reject:
         - WEB
         - WEB-DL
+        - KORSUB
   notification:
     email:
       active: True

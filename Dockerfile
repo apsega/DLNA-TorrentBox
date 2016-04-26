@@ -7,7 +7,8 @@ RUN yum update -y && \
     yum -y install minidlna deluge-web && \
     yum clean all && \
     mkdir -p /home/Videos && \
-    easy_install flexget
+    easy_install flexget && \
+    rm -rfv nux-dextop-release-0-5.el7.nux.noarch.rpm
 
 COPY ["config.yml", "templates/", "/root/.flexget/"]
 COPY ["startup.sh", "/root/"]

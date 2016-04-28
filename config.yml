@@ -22,6 +22,7 @@ templates:
         - WEB
         - WEB-DL
         - KORSUB
+        
   notification:
     email:
       active: True
@@ -31,6 +32,18 @@ templates:
       template: html.template
 
 tasks:
+  Watchlist task:
+    trakt_list:
+      username: edgaras
+      list: watchlist
+      type: movies
+    quality: 1080p 720p
+    regexp:
+    reject:
+      - WEB
+      - WEB-DL
+    #accept_all: yes
+    movie_queue: add
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
     series:

@@ -15,6 +15,6 @@ COPY ["startup.sh", "/root/"]
 COPY ["minidlna.conf", "/etc/"]
 
 VOLUME ["/home/"]
-EXPOSE 8112 8200 1900
+EXPOSE 8112 8200 1900/udp
 
 ENTRYPOINT ["/root/startup.sh"]

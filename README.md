@@ -22,15 +22,15 @@ Below are a few examples of how to get running this container.
 
 To run this container with random exposed ports, use ``-P`` flag. Please note, that Web UI will be port assigned to container's 8112 port.
 
-    docker run --name torrent-box -P -d edgaras/dlna-torrentbox:latest
+    docker run --net=host --name torrent-box -P -d edgaras/dlna-torrentbox:latest
 
 You can mount data volume (container's /home/) to your filesystem location (i.e. /home/dlna/) try the following command:
 
-    docker run --name torrent-box -P -v /home/dlna:/home -d edgaras/dlna-torrentbox:latest
+    docker run --net=host --name torrent-box -P -v /home/dlna:/home -d edgaras/dlna-torrentbox:latest
 
 Assign 80 port to Deluge Web UI with the following:
 
-    docker run --name torrent-box -p 80:8112 -P -d edgaras/dlna-torrentbox:latest
+    docker run --net=host --name torrent-box -p 80:8112 -P -d edgaras/dlna-torrentbox:latest
 
 # Configuration
 To configure Flexget RSS, run the following command:

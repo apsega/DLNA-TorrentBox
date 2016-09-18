@@ -14,7 +14,6 @@ templates:
 
   movies:
     exists_movie: /home/Videos/
-    imdb_required: yes
     seen_movies: strict
     quality: 1080p
     regexp:
@@ -38,12 +37,7 @@ tasks:
       list: watchlist
       type: movies
     quality: 1080p 720p
-    regexp:
-    reject:
-      - WEB
-      - WEB-DL
-    #accept_all: yes
-    movie_queue: add
+    accept_all: yes
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
     series:

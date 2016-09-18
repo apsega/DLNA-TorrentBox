@@ -5,10 +5,12 @@ RUN yum update -y && \
     yum update -y && \
     rpm -ivh nux-dextop-release-0-5.el7.nux.noarch.rpm && \
     yum -y install minidlna deluge-web && \
-    yum -y install python34-setuptools && \
+    yum -y install python-pip && \
+    pip install --upgrade pip --no-cache-dir && \
+    pip install setuptools --upgrade --no-cache-dir && \
     yum clean all && \
     mkdir -p /home/Videos && \
-    easy_install-3.4 flexget && \
+    pip install flexget && \
     rm -rfv nux-dextop-release-0-5.el7.nux.noarch.rpm
 
 COPY ["config.yml", "templates/", "/root/.flexget/"]

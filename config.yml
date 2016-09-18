@@ -38,6 +38,10 @@ tasks:
       type: movies
     quality: 1080p 720p
     accept_all: yes
+    template:
+      - deluge_server
+      - notification
+      - movies
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
     series:

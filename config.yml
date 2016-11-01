@@ -13,7 +13,7 @@ templates:
       password: password_goes_here
 
   movies:
-    exists_movie: /home/Videos/
+    exists_movie: /home/Videos/Movies
     seen_movies: strict
     quality: 1080p
     regexp:
@@ -25,12 +25,24 @@ templates:
   notification:
     email:
       active: True
-      from: TorrentBox
-      to: your@email.com
+      from: torrentbox@gmail.com
+      to: reiceiver@email.com
+      smtp_host: smtp.gmail.com
+      smtp_port: 587
+      smtp_username: torrentbox
+      smtp_password: password
+      smtp_tls: yes
       subject: '[TorrentBox] New Download'
-      template: html.template
+      template: html.template        
+
+schedules:
+  # Run every task once an hour
+  - tasks: '*'
+    interval:
+      hours: 1
 
 tasks:
+
   Watchlist task:
     trakt_list:
       username: edgaras
@@ -42,22 +54,26 @@ tasks:
       - deluge_server
       - notification
       - movies
+      
   Series task:
     rss: http://www.linkomanija.net/rss.php?feed=dl&cat[]=60&cat[]=62&cat[]=46&passkey=
     series:
       - Mr Robot
       - The Big Bang Theory
-      - Top Gear
+      - Grand Tour
       - Game of Thrones
       - House of cards
       - Suits
       - UEFA Champions League Highlights
       - Vikings
+      - Westworld
       - Narcos:
           quality: 720p 1080p
     template:
       - deluge_server
       - notification
+    download: /home/Videos/TV_Shows
+    
   Movies task:
     rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=
     template:
@@ -70,4 +86,4 @@ tasks:
       min_year: 2009
       reject_genres:
         - musical
-    download: /home/Videos/
+    download: /home/Videos/Movies

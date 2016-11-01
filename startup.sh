@@ -1,4 +1,7 @@
 #!/bin/bash
+mkdir -p /home/Videos/TV_Shows
+mkdir -p /home/Videos/Movies
+
 /usr/bin/deluged
 sleep 2
 PASSWORD=$(cat /root/.config/deluge/auth | awk -F: '{print $2}')

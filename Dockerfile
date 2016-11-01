@@ -11,7 +11,9 @@ RUN yum update -y && \
     yum clean all && \
     mkdir -p /home/Videos && \
     pip install flexget && \
-    rm -rfv nux-dextop-release-0-5.el7.nux.noarch.rpm
+    rm -rfv nux-dextop-release-0-5.el7.nux.noarch.rpm \
+    mkdir -p /home/Videos/Movies && \
+    mkdir -p /home/Videos/TV_Shows
 
 COPY ["config.yml", "templates/", "/root/.flexget/"]
 COPY ["startup.sh", "/root/"]

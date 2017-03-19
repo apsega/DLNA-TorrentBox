@@ -1,5 +1,19 @@
 templates:
   global:
+    notify:
+      task:
+        title: '[TorrentBox] New Download'
+        template: html
+        via:
+          - email:
+              from: torrentbox@gmail.com
+              to: reiceiver@email.com
+              smtp_host: smtp.gmail.com
+              smtp_port: 587
+              smtp_username: torrentbox
+              smtp_password: password
+              smtp_tls: yes
+              html: yes
     regexp:
       reject:
         - WEB
@@ -52,7 +66,6 @@ tasks:
     accept_all: yes
     template:
       - deluge_server
-      - notification
       - movies
       
   Series task:
@@ -64,6 +77,7 @@ tasks:
       - Game of Thrones
       - House of cards
       - Suits
+      - Shameless
       - UEFA Champions League Highlights
       - Vikings
       - Westworld
@@ -71,14 +85,12 @@ tasks:
           quality: 720p 1080p
     template:
       - deluge_server
-      - notification
     download: /home/Videos/TV_Shows
     
   Movies task:
     rss: https://www.linkomanija.net/rss.php?feed=dl&cat[]=52&passkey=
     template:
       - movies
-      - notification
       - deluge_server
     imdb:
       min_score: 7.5

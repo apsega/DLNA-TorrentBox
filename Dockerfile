@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM centos:7
 RUN yum update -y && \
     yum install -y wget epel-release && \
     wget http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm && \
